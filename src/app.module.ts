@@ -10,10 +10,20 @@ import { AppService } from './app.service';
 
 // Entities
 import { User } from './user/entities/user.entity';
+import { Product } from './product/entities/product.entity';
+import { ProductImage } from './product_image/entities/product_image.entity';
+import { ProductSize } from './product_size/entities/product_size.entity';
+import { Category } from './category/entities/category.entity';
 
 // Modules
 import { UserModule } from './user/user.module';
 import { DataSource } from 'typeorm';
+import { AuthModule } from './auth/auth.module';
+import { ProductModule } from './product/product.module';
+import { ProductImageModule } from './product_image/product_image.module';
+import { ProductSizeModule } from './product_size/product_size.module';
+import { CategoryModule } from './category/category.module';
+import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
   imports: [
@@ -30,9 +40,15 @@ import { DataSource } from 'typeorm';
       password: 'postgres',
       database: 'silk_road',
       synchronize: true,
-      entities: [User],
+      entities: [User, Product, ProductImage, ProductSize, Category],
     }),
     UserModule,
+    AuthModule,
+    ProductModule,
+    ProductImageModule,
+    ProductSizeModule,
+    CategoryModule,
+    TransactionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
