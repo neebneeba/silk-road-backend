@@ -3,19 +3,21 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 // Entities
 import { Product } from 'src/product/entities/product.entity';
+import { ProductVariation } from 'src/product_variation/entities/product_variation.entity';
 
 @Entity()
-export class ProductImage {
+export class ProductColor {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  path: string;
+  name: string;
 
   @CreateDateColumn({
     type: 'timestamp',
@@ -27,6 +29,9 @@ export class ProductImage {
   })
   updated_at: Date;
 
-  @ManyToOne(() => Product, (product) => product.images)
+  @OneToMany(() => ProductVariation, (productImage) => productImage.color)
+  public color_size: ProductVariation[];
+
+  @ManyToOne(() => Product, (product) => product.colors)
   product: Product;
 }

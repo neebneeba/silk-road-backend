@@ -1,10 +1,17 @@
-import { Role } from 'src/_enum/role.enum';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+// Enums
+import { Role } from 'src/_enum/role.enum';
+
+// Entities
+import { CartItem } from 'src/cart_item/entities/cart_item.entity';
+import { Order } from 'src/order/entities/order.entity';
 
 @Entity()
 export class User {
@@ -60,4 +67,10 @@ export class User {
     type: 'timestamp',
   })
   updated_at: Date;
+
+  @OneToMany(() => CartItem, (cartItems) => cartItems.user)
+  cart_items: CartItem[];
+
+  @OneToMany(() => Order, (image) => image.user)
+  orders: Order[];
 }
