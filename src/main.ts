@@ -9,6 +9,9 @@ async function bootstrap() {
 
   app.use(helmet());
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors({
+    origin: process.env.CLIENT_ORIGIN,
+  });
 
   await app.listen(process.env.PORT);
 
