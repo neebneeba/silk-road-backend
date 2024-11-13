@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Res,
+  HttpStatus,
+} from '@nestjs/common';
+import { Response } from 'express';
+import { QueryFailedError } from 'typeorm';
 
 // Services
 import { UserService } from './user.service';
@@ -12,8 +24,19 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  create(@Res() res: Response, @Body() createUserDto: CreateUserDto) {
+    this.userService
+      .create(createUserDto)
+      .then(() => {
+        res.send('User registered successfully!');
+      })
+      .catch((error) => {
+        if (error instanceof QueryFailedError) {
+          res.status(HttpStatus.BAD_REQUEST).send(error.message);
+        } else {
+          res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+      });
   }
 
   @Get()

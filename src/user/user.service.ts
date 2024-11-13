@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 // Entities
 import { User } from './entities/user.entity';
+
+// Enums
+import { Role } from 'src/_enum/role.enum';
 
 // Dtos
 import { CreateUserDto } from './dto/create-user.dto';
@@ -23,12 +26,9 @@ export class UserService {
 
     createUserDto.password = hash;
 
-    this.userRepository.save(
-      {
-        ...createUserDto,
-      });
-
-    return 'User registered successfully!';
+    return this.userRepository.save({
+      ...createUserDto,
+    });
   }
 
   findAll() {
@@ -38,17 +38,26 @@ export class UserService {
   findByUsername(username: string) {
     return this.userRepository.findOne({
       where: {
-        username
-      }
-    })
+        username,
+      },
+    });
+  }
+
+  findAdminByUsername(username: string) {
+    return this.userRepository.findOne({
+      where: {
+        username,
+        role: In([Role.Admin, Role.SuperAdmin]),
+      },
+    });
   }
 
   findOne(id: number) {
     return this.userRepository.findOne({
       where: {
-        id
-      }
-    })
+        id,
+      },
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
