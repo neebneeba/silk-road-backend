@@ -22,6 +22,18 @@ export class CategoryService {
     return 'Category created successfully!';
   }
 
+  async findByPagination(limit: number, page: number) {
+    const categories = await this.categoryRepository.find({
+      skip: limit * page,
+      take: limit,
+    });
+
+    return {
+      items: categories,
+      count: await this.categoryRepository.count(),
+    };
+  }
+
   findAll() {
     return `This action returns all category`;
   }
