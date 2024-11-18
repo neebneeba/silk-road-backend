@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 
 // Services
@@ -25,6 +26,7 @@ import { Role } from 'src/_enum/role.enum';
 // Dtos
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { PaginationDto } from 'src/_dto/pagination.dto';
 
 @Controller('category')
 export class CategoryController {
@@ -39,8 +41,8 @@ export class CategoryController {
   }
 
   @Get()
-  findAll() {
-    return this.categoryService.findAll();
+  findAll(@Query() query: PaginationDto) {
+    return this.categoryService.findByPagination(+query.limit, +query.page);
   }
 
   @Get(':id')
