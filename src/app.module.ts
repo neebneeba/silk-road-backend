@@ -34,12 +34,14 @@ import { CartItemModule } from './cart_item/cart_item.module';
 import { OrderModule } from './order/order.module';
 import { TransactionItemModule } from './transaction_item/transaction_item.module';
 
+// Utils
+import envHelper from './_utils/env_helper.util';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath:
-        process.env.NODE_ENV === 'production' ? '.env' : '.env.local',
+      envFilePath: envHelper(),
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
