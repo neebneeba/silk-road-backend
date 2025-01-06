@@ -36,7 +36,7 @@ export class User {
   @Column({
     nullable: true,
   })
-  profile_picture: string;
+  profile_picture: string | null;
 
   @Column()
   password: string;
